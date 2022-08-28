@@ -1,0 +1,23 @@
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+local Functions = {}
+
+Functions.GetPlayer = function(Player)
+    local Found = {}
+    for i,v in pairs(game:GetService("Players"):GetPlayers()) do
+        if v.Name:lower():sub(1, #Player) == Player:lower() then
+            return v.Name
+        end
+    end    
+end
+
+Functions.Goto = function(Player)
+    if Players:FindFirstChild(tostring(Player)) then
+        if Players[tostring(Player)].Character then
+            LocalPlayer.Character.HumanoidRootPart.CFrame = Players[tostring(Player)].Character.HumanoidRootPart.CFrame
+        end
+    end
+end
+
+return Functions
