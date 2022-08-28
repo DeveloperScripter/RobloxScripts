@@ -1,10 +1,10 @@
 local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
 local LocalPlayer = Players.LocalPlayer
 
-local Functions = {}
+local Functions = {  }
 
 Functions.GetPlayer = function(Player)
-    local Found = {}
     for i,v in pairs(game:GetService("Players"):GetPlayers()) do
         if v.Name:lower():sub(1, #Player) == Player:lower() then
             return v.Name
@@ -19,5 +19,69 @@ Functions.Goto = function(Player)
         end
     end
 end
+
+Functions.SetWalkSpeed = function(Value)
+    if LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
+        LocalPlayer.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = Value
+    end
+end
+
+Functions.SetJumpPower = function(Value)
+    if LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
+        LocalPlayer.Character:FindFirstChildOfClass("Humanoid").JumpPower = Value
+    end
+end
+
+Functions.Dragify = function(Frame)
+    local dragToggle = nil
+	local dragSpeed = 0.25
+	local dragInput = nil
+	local dragStart = nil
+	local dragPos = nil
+    local startPos = Frame.Position
+	local function updateInput(input)
+		local Delta = input.Position - dragStart
+		local Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + Delta.X, startPos.Y.Scale, startPos.Y.Offset + Delta.Y)
+		game:GetService("TweenService"):Create(Frame, TweenInfo.new(.25), {
+			Position = Position
+		}):Play()
+	end
+	Frame.InputBegan:Connect(function(input)
+		if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
+			dragToggle = true
+			dragStart = input.Position
+			input.Changed:Connect(function()
+				if (input.UserInputState == Enum.UserInputState.End) then
+					dragToggle = false
+				end
+			end)
+		end
+	end)
+	Frame.InputChanged:Connect(function(input)
+		if (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+			dragInput = input
+		end
+	end)
+	game:GetService("UserInputService").InputChanged:Connect(function(input)
+		if (input == dragInput and dragToggle) then
+			updateInput(input)
+		end
+	end)
+end
+
+local SpamLoop;
+
+Functions.Spam = function(String)
+    SpamLoop = RunService.RenderStepped:Connect(function()
+        local args = {
+            [1] = String,
+            [2] = "All"
+        }
+        
+        game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))        
+    end)
+end
+
+Functions.Unspam = function() SpamLoop:Disconnect() end
 
 return Functions
