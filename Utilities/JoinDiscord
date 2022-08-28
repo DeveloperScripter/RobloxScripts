@@ -9,7 +9,7 @@ function Join(invite)
                 Headers = {
                     ['Content-Type'] = 'application/json',
                     ['origin'] = 'https://discord.com',
-                },
+                };
                 Body = game:GetService('HttpService'):JSONEncode({
                     ["args"] = {
                         ['code'] = invite,
