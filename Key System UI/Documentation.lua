@@ -1,7 +1,7 @@
 Lib.CreateUI(<table> Config 
   {
-    Title, -- Optional
-    Key,
-    KeyUrl, -- Optional
+    <string> Title, -- Optional
+    <string> Key,
+    <string> KeyUrl, -- Optional
     <function> Callback
 })
