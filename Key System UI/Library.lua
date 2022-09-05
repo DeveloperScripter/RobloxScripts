@@ -51,7 +51,7 @@ function Lib.CreateUI(Config)
     local KeyShit = Config.Key or nil
     local KeyUrl = Config.KeyUrl or nil
 
-    local LoadFunction = Lib.LoadFunction or Lib.Load
+    local LoadFunction = Config.LoadFunction or Config.Load or Config.Callback or function() return warn("Callback not given") end
 
     if KeyShit == nil then
         return error("Key not given (missing \"Key\")")
