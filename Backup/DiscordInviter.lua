@@ -450,3 +450,4 @@ Inviter.Gui = SelfModules.UI.Create("ScreenGui", {
 Inviter.Gui.Parent = CG
 
 return Inviter
+
